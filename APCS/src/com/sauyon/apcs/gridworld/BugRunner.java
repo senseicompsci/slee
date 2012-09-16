@@ -1,5 +1,6 @@
 package com.sauyon.apcs.gridworld;
 
+import java.awt.Color;
 import java.util.Random;
 
 import info.gridworld.actor.ActorWorld;
@@ -11,47 +12,41 @@ public class BugRunner
 {
 	public static void main(String[] args)
 	{
-		ActorWorld world = new ActorWorld(new UnboundedGrid());
+		ActorWorld world = new ActorWorld();
 		
-		Bug b = new Bug();
+		makeRandomBugs(world, 3);
 		
-		world.add(b);
 		world.add(new Rock());
 		world.show();
-		
-		randomBug1(b, 1000);
 	}
 	
-	public void moveBug(Bug bug)
+	public static void moveBug(Bug bug)
 	{
 		bug.move();
 	}
 	
-	public void moveBug1(Bug bug)
+	public static void moveBug1(Bug bug)
 	{
 		if(bug.canMove())
 			bug.move();
 	}
 	
-	public void moveBug2(Bug bug, int n)
+	public static void moveBug2(Bug bug, int n)
 	{
 		for(int i = 0; i < n; i++)
 			if(bug.canMove())
 				bug.move();
 	}
 	
-	public void moveBug3(Bug bug, int n)
+	public static void moveBug3(Bug bug, int n)
 	{
 		for(int i = 0; i < n; i++)
 		{
-			if(bug.canMove())
-				bug.move();
-			else
-				bug.turn();
+			bug.act();
 		}
 	}
 	
-	public void randomBug(Bug bug)
+	public static void randomBug(Bug bug)
 	{
 		Random g = new Random();
 		
@@ -69,6 +64,31 @@ public class BugRunner
 			bug.setDirection(g.nextInt(4)*90);
 			if(bug.canMove())
 				bug.move();
+		}
+	}
+	
+	public static void colorBug(Bug bug)
+	{
+		bug.setColor(new Color(bug.getLocation().getRow(),0,bug.getLocation().getCol()));
+	}
+	
+	public static void makeBugs(ActorWorld world, int n)
+	{
+		for(int i = 0; i < n; i++)
+		{
+			Bug b = new Bug();
+			world.add(b);
+			colorBug(b);
+		}
+	}
+	
+	public static void makeRandomBugs(ActorWorld world, int n)
+	{
+		for(int i = 0; i < n; i++)
+		{
+			RandomBug b = new RandomBug();
+			world.add(b);
+			colorBug(b);
 		}
 	}
 }
